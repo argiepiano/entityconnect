@@ -544,7 +544,7 @@ function entityconnect_return_form_alter(&$form, &$form_state, $form_id, $cache_
 
     $field_info = field_info_field($data['field']);
 
-    if ( $widget_container_type == 'autocomplete' && $widget_container['target_id']['#type'] == 'select' ) {
+    if ($widget_container_type == 'autocomplete' && isset($widget_container['target_id']) && $widget_container['target_id']['#type'] == 'select') {
       $widget_container_type = 'multiple_selects';
     }
 
