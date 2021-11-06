@@ -10,6 +10,7 @@
  *   The form definition for the field instance settings.
  */
 function entityconnect_field_instance_settings_form($field, $instance) {
+  $config = config('entityconnect.settings');
   $settings = $instance;
 
   $form['entityconnect'] = array(
@@ -27,7 +28,7 @@ function entityconnect_field_instance_settings_form($field, $instance) {
   $form['entityconnect']['button']['unload_add_button'] = array(
     '#type' => 'radios',
     '#title' => t('Display Entity Connect "add" button.'),
-    '#default_value' => !isset($settings['entityconnect']['button']['unload_add_button']) ? variable_get('entityconnect_unload_add_default', 1) : $settings['entityconnect']['button']['unload_add_button'],
+    '#default_value' => !isset($settings['entityconnect']['button']['unload_add_button'])?$config->get('entityconnect_unload_add_default') : $settings['entityconnect']['button']['unload_add_button'],
     '#description' => t('Choose "No" if you want to unload "add" button for the field'),
     '#options' => array(
       '0' => t('Yes'),
@@ -41,7 +42,7 @@ function entityconnect_field_instance_settings_form($field, $instance) {
   $form['entityconnect']['button']['unload_edit_button'] = array(
     '#type' => 'radios',
     '#title' => t('Display Entity Connect "edit" button.'),
-    '#default_value' => !isset($settings['entityconnect']['button']['unload_edit_button']) ? variable_get('entityconnect_unload_edit_default', 1) : $settings['entityconnect']['button']['unload_edit_button'],
+    '#default_value' => !isset($settings['entityconnect']['button']['unload_edit_button'])?$config->get('entityconnect_unload_edit_default') : $settings['entityconnect']['button']['unload_edit_button'],
     '#description' => t('Choose "No" if you want to unload "edit" button for the field'),
     '#options' => array(
       '0' => t('Yes'),
@@ -58,11 +59,11 @@ function entityconnect_field_instance_settings_form($field, $instance) {
   $form['entityconnect']['icon']['show_add_icon'] = array(
     '#required' => '1',
     '#key_type_toggled' => '1',
-    '#default_value' => !isset($settings['entityconnect']['icon']['show_add_icon']) ? variable_get('entityconnect_show_add_icon_default', 0) : $settings['entityconnect']['icon']['show_add_icon'],
+    '#default_value' => !isset($settings['entityconnect']['icon']['show_add_icon'])?$config->get('entityconnect_show_add_icon_default') : $settings['entityconnect']['icon']['show_add_icon'],
     '#description' => t('Default: "Icon only"<br />
-                         Choose "Icon + Text" if you want to see the edit (pencil) icon + the text displayed by default.<br />
-                         Choose "Text only" if you don\'t want to see the edit (pencil) icon displayed by default.<br />
-                         Each field can override this value.'),
+      Choose "Icon + Text" if you want to see the edit (pencil) icon + the text displayed by default.<br />
+      Choose "Text only" if you don\'t want to see the edit (pencil) icon displayed by default.<br />
+      Each field can override this value.'),
     '#weight' => '2',
     '#type' => 'radios',
     '#options' => array(
@@ -76,11 +77,11 @@ function entityconnect_field_instance_settings_form($field, $instance) {
   $form['entityconnect']['icon']['show_edit_icon'] = array(
     '#required' => '1',
     '#key_type_toggled' => '1',
-    '#default_value' => !isset($settings['entityconnect']['icon']['show_edit_icon']) ? variable_get('entityconnect_show_edit_icon_default', 0) : $settings['entityconnect']['icon']['show_edit_icon'],
+    '#default_value' => !isset($settings['entityconnect']['icon']['show_edit_icon'])?$config->get('entityconnect_show_edit_icon_default') : $settings['entityconnect']['icon']['show_edit_icon'],
     '#description' => t('Default: "Icon only"<br />
-                         Choose "Icon + Text" if you want to see the edit (pencil) icon + the text displayed by default.<br />
-                         Choose "Text only" if you don\'t want to see the edit (pencil) icon displayed by default.<br />
-                         Each field can override this value.'),
+      Choose "Icon + Text" if you want to see the edit (pencil) icon + the text displayed by default.<br />
+      Choose "Text only" if you don\'t want to see the edit (pencil) icon displayed by default.<br />
+      Each field can override this value.'),
     '#weight' => '3',
     '#type' => 'radios',
     '#options' => array(

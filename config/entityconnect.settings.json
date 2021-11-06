@@ -1,0 +1,8 @@
+{
+    "_config_name": "entityconnect.settings",
+    "entityconnect_cache_lifetime": "CACHE_PERMANENT",
+    "entityconnect_unload_add_default": "1",
+    "entityconnect_unload_edit_default": "1",
+    "entityconnect_show_add_icon_default": "0",
+    "entityconnect_show_edit_icon_default": "0"
+}

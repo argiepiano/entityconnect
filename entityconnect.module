@@ -68,7 +68,7 @@ function entityconnect_menu() {
   $items['admin/config/content/entityconnect'] = array(
     'title' => 'Entity Connect',
     'description' => 'Configure default values for Entity Reference fields using Entity Connect',
-    'page callback' => 'drupal_get_form',
+    'page callback' => 'backdrop_get_form',
     'page arguments' => array('_entityconnect_admin_form'),
     'access arguments' => array('administer site configuration'),
     'file' => 'includes/entityconnect.admin.inc',
@@ -132,13 +132,24 @@ function entityconnect_include_form() {
 }
 
 /**
+ * Implements hook_config_info().
+ */
+function entityconnect_config_info() {
+  $prefixes['entityconnect.settings'] = array(
+    'label' => t('Entity Connect settings'),
+    'group' => t('Configuration'),
+  );
+  return $prefixes;
+}
+
+/**
  * Wraps cache set.
  *
  * We can set the expire easily if needed.
  */
 function entityconnect_cache_set($cid, $data) {
   // Get cache_lifetime variable.
-  $cache_lifetime = variable_get('entityconnect_cache_lifetime', CACHE_PERMANENT);
+  $cache_lifetime = config_get('entityconnect.settings', 'entityconnect_cache_lifetime');
 
   if ($cache_lifetime != CACHE_PERMANENT) {
     $cache_lifetime = REQUEST_TIME + $cache_lifetime;
@@ -175,14 +186,14 @@ function entityconnect_form_alter(&$form, &$form_state, $form_id) {
   // first we try the $_REQUEST param.  if we do not getting it from there we
   // try the arg(3) if we are on a add form.  Also if we are on an add form we
   // know that we are a child page.
-  foreach(arg() as $key => $value) {
+  foreach (arg() as $key => $value) {
     if (stripos($value, 'entityconnect-form-', 0) === 0) {
       $cid = $value;
     }
   }
 
   if ((isset($_REQUEST['build_cache_id']) && ($cid = $_REQUEST['build_cache_id']))
-      || ((isset($cid)) && $child = TRUE)) {
+       || ((isset($cid)) && $child = TRUE)) {
     $cache = entityconnect_cache_get($cid);
     entityconnect_include_form();
     if ($child) {
@@ -214,8 +225,8 @@ function entityconnect_form_alter(&$form, &$form_state, $form_id) {
  */
 function entityconnect_module_implements_alter(&$module_list, $context) {
   // Need to override both to get correct sort order.
-  // @see: https://api.drupal.org/api/drupal/modules%21system%21system.api.php/function/hook_module_implements_alter/7
-  if($context == 'form_node_form_alter' || $context == 'form_alter') {
+  // @see: https://api.drupal.org/api/backdrop/modules%21system%21system.api.php/function/hook_module_implements_alter/7
+  if ($context == 'form_node_form_alter' || $context == 'form_alter') {
     // Move entityconnect implementation to the end of the list to ensure it gets called last.
     $group = isset($module_list['entityconnect']) ? $module_list['entityconnect'] : FALSE;
     unset($module_list['entityconnect']);

@@ -45,12 +45,12 @@ function entityconnect_eck_entityconnect_return_form_alter(&$datas) {
         case 'textfield':
           $datas['element_value'] = !empty($eck_entity->title) ? $eck_entity->title : t('Entity has no title');
           $datas['element_value'] .= ' (' . $eck_entity->id . ')';
-          if (!empty ($widget_container['#value'])) {
+          if (!empty($widget_container['#value'])) {
             $datas['element_value'] .= ', ' . $widget_container['#value'];
           }
           break;
 
-        // Select list.
+          // Select list.
         case 'select':
           if ($widget_container['#multiple'] == FALSE) {
             $datas['element_value'] = $eck_entity->id;
@@ -61,12 +61,12 @@ function entityconnect_eck_entityconnect_return_form_alter(&$datas) {
           }
           break;
 
-        // Radios widget.
+          // Radios widget.
         case 'radios':
           $datas['element_value'] = $eck_entity->id;
           break;
 
-        // Checkboxes widget.
+          // Checkboxes widget.
         case 'checkboxes':
           $datas['element_value'] = $eck_entity->id;
           $datas['element_value'] = $data['form'][$data['field']][$language]['#value'] + array($datas['element_value'] => $datas['element_value']);
@@ -93,7 +93,7 @@ function entityconnect_eck_entityconnect_child_form_alter(&$datas) {
   if (isset($form['#entity_type']) && isset($form['#bundle'])) {
     // Add support for ECK.
     if ('eck__entity__form_add_' . $form['#entity_type'] . '_' . $form['#bundle'] == $form_id
-      || 'eck__entity__form_edit_' . $form['#entity_type'] . '_' . $form['#bundle'] == $form_id) {
+       || 'eck__entity__form_edit_' . $form['#entity_type'] . '_' . $form['#bundle'] == $form_id) {
       $form['actions']['cancel']['#weight'] = 10001;
       $form['actions']['submit']['#submit'][] = 'eck__entity__form_submit';
 
@@ -103,6 +103,10 @@ function entityconnect_eck_entityconnect_child_form_alter(&$datas) {
   }
 }
 
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
 function entityconnect_eck_entityconnect_child_form_submit_alter(&$datas) {
 
   $entity_type = $datas['entity_type'];

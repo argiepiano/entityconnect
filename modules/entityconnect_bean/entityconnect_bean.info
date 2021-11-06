@@ -1,6 +1,7 @@
 name = "Entity Connect and Bean bridge."
 description = "Allows for referenced entity to be created and edited from the entity reference field"
-core = "7.x"
+backdrop = 1.x
+type = module
 package = Entity Connect
 
 dependencies[] = "bean"

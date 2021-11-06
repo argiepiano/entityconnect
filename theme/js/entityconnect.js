@@ -1,5 +1,5 @@
 (function ($) {
-  Drupal.behaviors.entityconnect = {
+  Backdrop.behaviors.entityconnect = {
     'attach': function(context) {
       ref_field_buttons = {};
 

@@ -11,6 +11,7 @@
  * for each allowed entityreference field.
  */
 function _entityconnect_field_attach_form($entity_type, $entity, &$form, &$form_state, $field_name, $field, $langcode = LANGUAGE_NONE) {
+  $config = config('entityconnect.settings');
   // Set value with root level information.
   $language = $form[$field_name]['#language'];
   $field_container = &$form[$field_name];
@@ -33,22 +34,22 @@ function _entityconnect_field_attach_form($entity_type, $entity, &$form, &$form_
   }
 
   if (!isset($instance['entityconnect']['button']['unload_add_button'])) {
-    $instance['entityconnect']['button']['unload_add_button'] = variable_get('entityconnect_unload_add_default', 1);
+    $instance['entityconnect']['button']['unload_add_button'] = $config->get('entityconnect_unload_add_default');
   }
 
   if (!isset($instance['entityconnect']['button']['unload_edit_button'])) {
-    $instance['entityconnect']['button']['unload_edit_button'] = variable_get('entityconnect_unload_edit_default', 1);
+    $instance['entityconnect']['button']['unload_edit_button'] = $config->get('entityconnect_unload_edit_default');
   }
 
   $addbuttonallowed = $instance['entityconnect']['button']['unload_add_button'];
   $editbuttonallowed = $instance['entityconnect']['button']['unload_edit_button'];
 
   if (!isset($instance['entityconnect']['icon']['show_add_icon'])) {
-    $instance['entityconnect']['icon']['show_add_icon'] = variable_get('entityconnect_show_add_icon_default', 0);
+    $instance['entityconnect']['icon']['show_add_icon'] = $config->get('entityconnect_show_add_icon_default');
   }
 
   if (!isset($instance['entityconnect']['icon']['show_edit_icon'])) {
-    $instance['entityconnect']['icon']['show_edit_icon'] = variable_get('entityconnect_show_edit_icon_default', 0);
+    $instance['entityconnect']['icon']['show_edit_icon'] = $config->get('entityconnect_show_edit_icon_default');
   }
 
   $add_icon = $instance['entityconnect']['icon']['show_add_icon'];
@@ -75,7 +76,7 @@ function _entityconnect_field_attach_form($entity_type, $entity, &$form, &$form_
       switch ($entity_type) {
         case 'taxonomy_term':
           if (isset($views_display[$display]->display_options['filters']['machine_name']['table'])
-                && $views_display[$display]->display_options['filters']['machine_name']['table'] == 'taxonomy_vocabulary' ) {
+                 && $views_display[$display]->display_options['filters']['machine_name']['table'] == 'taxonomy_vocabulary' ) {
             $acceptable_types = $views_display[$display]->display_options['filters']['machine_name']['value'];
           }
           elseif (isset($views_display['default']->display_options['filters']['machine_name']['value'])) {
@@ -109,7 +110,7 @@ function _entityconnect_field_attach_form($entity_type, $entity, &$form, &$form_
     'acceptable_types' => &$acceptable_types,
     'field' => $field
   );
-  drupal_alter('entityconnect_field_attach_form', $datas);
+  backdrop_alter('entityconnect_field_attach_form', $datas);
 
   // We currently should separate Autocomplete widget from others default widget
   // because "Edit" button will not react well on multiple selected items.
@@ -123,9 +124,9 @@ function _entityconnect_field_attach_form($entity_type, $entity, &$form, &$form_
     $extra_class .= (!isset($widget_container['#cardinality']) || $widget_container['#cardinality'] == 1) ? ' single-value' : ' multiple-values';
     $extra_class .= (isset($widget_container['#multiple']) && $widget_container['#multiple'] == TRUE) ? ' multiple-selection' : ' single-selection';
     if (($addbuttonallowed == 0 || $editbuttonallowed == 0)
-        && (isset($widget_container['#multiple']) && $widget_container['#multiple'] == TRUE)
-        || $widget_container['#type'] == 'radios'
-        || $widget_container['#type'] == 'checkboxes') {
+         && (isset($widget_container['#multiple']) && $widget_container['#multiple'] == TRUE)
+         || $widget_container['#type'] == 'radios'
+         || $widget_container['#type'] == 'checkboxes') {
       $field_container['#attributes']['class'][] = 'inline-label';
     }
     if (user_access('entityconnect add button') && $addbuttonallowed == 0) {
@@ -165,10 +166,10 @@ function _entityconnect_field_attach_form($entity_type, $entity, &$form, &$form_
     $extra_class .= (!isset($widget_container['#cardinality']) || $widget_container['#cardinality'] == 1) ? ' single-value' : ' multiple-values';
     $extra_class .= (isset($widget_container['#multiple']) && $widget_container['#multiple'] == TRUE) ? ' multiple-selection' : ' single-selection';
     if (($addbuttonallowed == 0 || $editbuttonallowed == 0)
-        && isset($widget_container['#type'])) {
-      if ((isset($widget_container['#multiple']) && $widget_container['#multiple'] == TRUE) || $widget_container['#type'] == 'radios' || $widget_container['#type'] == 'checkboxes'){
+         && isset($widget_container['#type'])) {
+      if ((isset($widget_container['#multiple']) && $widget_container['#multiple'] == TRUE) || $widget_container['#type'] == 'radios' || $widget_container['#type'] == 'checkboxes') {
         $field_container['#attributes']['class'][] = 'inline-label';
-     }
+      }
     }
     foreach ($widget_container as $key => &$widget_element) {
       if (is_numeric($key)) {
@@ -228,10 +229,10 @@ function entityconnect_add_form_element_new(&$widget_element, $language, $field_
     '#weight' => -2,
     '#attached' => array(
       'js' => array(
-        drupal_get_path('module', 'entityconnect') . "/theme/js/entityconnect.js",
+        backdrop_get_path('module', 'entityconnect') . "/theme/js/entityconnect.js",
       ),
       'css' => array(
-        drupal_get_path('module', 'entityconnect') . "/theme/css/entityconnect.css",
+        backdrop_get_path('module', 'entityconnect') . "/theme/css/entityconnect.css",
       ),
     ),
     '#attributes' => array(
@@ -262,10 +263,10 @@ function entityconnect_add_form_element_edit(&$widget_element, $language, $field
     '#weight' => -2,
     '#attached' => array(
       'js' => array(
-        drupal_get_path('module', 'entityconnect') . "/theme/js/entityconnect.js",
+        backdrop_get_path('module', 'entityconnect') . "/theme/js/entityconnect.js",
       ),
       'css' => array(
-        drupal_get_path('module', 'entityconnect') . "/theme/css/entityconnect.css",
+        backdrop_get_path('module', 'entityconnect') . "/theme/css/entityconnect.css",
       ),
     ),
     '#attributes' => array(
@@ -392,7 +393,7 @@ function entityconnect_add_edit_button_submit(&$form, &$form_state) {
 
   // If no entity has been chosen to edit, redirect to the original node.
   if (!$form_state['clicked_button']['#add_child'] && $target_id == '_none') {
-    drupal_set_message(
+    backdrop_set_message(
       t('You must select at least one entity to update.'),
       'error'
     );
@@ -402,7 +403,7 @@ function entityconnect_add_edit_button_submit(&$form, &$form_state) {
 
   $params = array();
   foreach ($_GET as $key => $value) {
-    if($key == 'q') {
+    if ($key == 'q') {
       continue;
     }
     $params[$key] = $value;
@@ -424,7 +425,7 @@ function entityconnect_add_edit_button_submit(&$form, &$form_state) {
     'field_container_key_exists' => $key_exists,
   );
 
-  drupal_alter('entityconnect_add_edit_button_submit', $data);
+  backdrop_alter('entityconnect_add_edit_button_submit', $data);
 
   entityconnect_cache_set($cache_id, $data);
 
@@ -477,7 +478,7 @@ function entityconnect_child_form_submit(&$form, &$form_state) {
           'entity_type' => $entity_type,
           'data' => &$data
         );
-        drupal_alter('entityconnect_child_form_submit', $datas);
+        backdrop_alter('entityconnect_child_form_submit', $datas);
         break;
     }
 
@@ -559,12 +560,12 @@ function entityconnect_return_form_alter(&$form, &$form_state, $form_id, $cache_
               case 'textfield':
                 $element['#default_value'] = $node->title;
                 $element['#default_value'] .= ' (' . $node->nid . ')';
-                if (!empty ($widget_container['#value'])) {
+                if (!empty($widget_container['#value'])) {
                   $element['#default_value'] .= ', ' . $widget_container['#value'];
                 }
                 break;
 
-              // Select list.
+                // Select list.
               case 'select':
                 if ($widget_container['#multiple'] == FALSE) {
                   $element['#default_value'] = $node->nid;
@@ -575,12 +576,12 @@ function entityconnect_return_form_alter(&$form, &$form_state, $form_id, $cache_
                 }
                 break;
 
-              // Radios widget.
+                // Radios widget.
               case 'radios':
                 $element['#default_value'] = $node->nid;
                 break;
 
-              // Checkboxes widget.
+                // Checkboxes widget.
               case 'checkboxes':
                 $element['#default_value'] = $node->nid;
                 $element['#default_value'] = $widget_container['#value'] + array($element['#default_value'] => $element['#default_value']);
@@ -613,12 +614,12 @@ function entityconnect_return_form_alter(&$form, &$form_state, $form_id, $cache_
               case 'textfield':
                 $element['#default_value'] = $user->name;
                 $element['#default_value'] .= ' (' . $user->uid . ')';
-                if (!empty ($widget_container['#value'])) {
+                if (!empty($widget_container['#value'])) {
                   $element['#default_value'] .= ', ' . $widget_container['#value'];
                 }
                 break;
 
-              // Select list.
+                // Select list.
               case 'select':
                 if ($widget_container['#multiple'] == FALSE) {
                   $element['#default_value'] = $user->uid;
@@ -629,18 +630,18 @@ function entityconnect_return_form_alter(&$form, &$form_state, $form_id, $cache_
                 }
                 break;
 
-              // Radios widget.
+                // Radios widget.
               case 'radios':
                 $element['#default_value'] = $user->uid;
                 break;
 
-              // Checkboxes widget.
+                // Checkboxes widget.
               case 'checkboxes':
                 $element['#default_value'] = $user->uid;
                 $element['#default_value'] = $form[$data['field']][$language]['#value'] + array($element['#default_value'] => $element['#default_value']);
                 break;
 
-              // Multiple selects widget
+                // Multiple selects widget
               case 'multiple_selects':
                 $element['#default_value'] = $user->uid;
                 break;
@@ -667,12 +668,12 @@ function entityconnect_return_form_alter(&$form, &$form_state, $form_id, $cache_
               case 'textfield':
                 $element['#default_value'] = $term->name;
                 $element['#default_value'] .= ' (' . $term->tid . ')';
-                if (!empty ($widget_container['#value'])) {
+                if (!empty($widget_container['#value'])) {
                   $element['#default_value'] .= ', ' . $widget_container['#value'];
                 }
                 break;
 
-              // Select list.
+                // Select list.
               case 'select':
                 if ($widget_container['#multiple'] == FALSE) {
                   $element['#default_value'] = $term->tid;
@@ -683,18 +684,18 @@ function entityconnect_return_form_alter(&$form, &$form_state, $form_id, $cache_
                 }
                 break;
 
-              // Radios widget.
+                // Radios widget.
               case 'radios':
                 $element['#default_value'] = $term->tid;
                 break;
 
-              // Checkboxes widget.
+                // Checkboxes widget.
               case 'checkboxes':
                 $element['#default_value'] = $term->tid;
                 $element['#default_value'] = $form[$data['field']][$language]['#value'] + array($element['#default_value'] => $element['#default_value']);
                 break;
 
-              // Multiple selects widget
+                // Multiple selects widget
               case 'multiple_selects':
                 $element['#default_value'] = $term->tid;
                 break;
@@ -716,12 +717,12 @@ function entityconnect_return_form_alter(&$form, &$form_state, $form_id, $cache_
               case 'textfield':
                 $element['#default_value'] = $vocabulary->name;
                 $element['#default_value'] .= ' (' . $vocabulary->vid . ')';
-                if (!empty ($widget_container['#value'])) {
+                if (!empty($widget_container['#value'])) {
                   $element['#default_value'] .= ', ' . $widget_container['#value'];
                 }
                 break;
 
-              // Select list.
+                // Select list.
               case 'select':
                 if ($widget_container['#multiple'] == FALSE) {
                   $element['#default_value'] = $vocabulary->vid;
@@ -732,18 +733,18 @@ function entityconnect_return_form_alter(&$form, &$form_state, $form_id, $cache_
                 }
                 break;
 
-              // Radios widget.
+                // Radios widget.
               case 'radios':
                 $element['#default_value'] = $vocabulary->vid;
                 break;
 
-              // Checkboxes widget.
+                // Checkboxes widget.
               case 'checkboxes':
                 $element['#default_value'] = $vocabulary->vid;
                 $element['#default_value'] = $form[$data['field']][$language]['#value'] + array($element['#default_value'] => $element['#default_value']);
                 break;
 
-              // Multiple selects widget
+                // Multiple selects widget
               case 'multiple_selects':
                 $element['#default_value'] = $vocabulary->vid;
                 break;
@@ -767,7 +768,7 @@ function entityconnect_return_form_alter(&$form, &$form_state, $form_id, $cache_
             'language' => $language,
             'element_value' => NULL
           );
-          drupal_alter('entityconnect_return_form', $datas);
+          backdrop_alter('entityconnect_return_form', $datas);
           break;
       }
       if (isset($element)) {
@@ -778,7 +779,7 @@ function entityconnect_return_form_alter(&$form, &$form_state, $form_id, $cache_
       }
     }
     $form_state['#entityconnect_processed'] = TRUE;
-    $form = drupal_rebuild_form($form_id, $form_state, $form);
+    $form = backdrop_rebuild_form($form_id, $form_state, $form);
   }
 }
 
@@ -795,7 +796,7 @@ function entityconnect_child_form_alter(&$form, &$form_state, $form_id, $cache_i
     'search_block_form'
   );
   // Allow other modules to alter exclude forms list.
-  drupal_alter('entityconnect_exclude_forms', $exclude_forms);
+  backdrop_alter('entityconnect_exclude_forms', $exclude_forms);
 
   if (in_array($form_id, $exclude_forms)) {
     return;
@@ -858,7 +859,7 @@ function entityconnect_child_form_alter(&$form, &$form_state, $form_id, $cache_i
     'form_state' => &$form_state,
     'form_id' => $form_id
   );
-  drupal_alter('entityconnect_child_form', $datas);
+  backdrop_alter('entityconnect_child_form', $datas);
 
 }
 
@@ -916,21 +917,21 @@ function _entityconnect_alter_form_state_input(&$form_state, $module, $widget_ty
 }
 
 /**
- * Reimplements drupal_array_get_nested_value() to answer specific needs of the module.
+ * Reimplements backdrop_array_get_nested_value() to answer specific needs of the module.
  *
  * Entityconnect button adds a new level in parents array,
  * named "add_entityconnect" and "edit_entityconnect" and we need to remove
  * them into our array building. So we need to rewrite
- * drupal_array_set_nested_value() to include these remove.
+ * backdrop_array_set_nested_value() to include these remove.
  *
- * @see drupal_array_get_nested_value()
+ * @see backdrop_array_get_nested_value()
  */
 function &entityconnect_array_get_nested_value(array &$array, array $parents, &$key_exists = NULL) {
   $ref = &$array;
 
   foreach ($parents as $parent) {
     if (stripos($parent, 'add_entityconnect') === FALSE
-            && stripos($parent, 'edit_entityconnect') === FALSE) {
+             && stripos($parent, 'edit_entityconnect') === FALSE) {
       if (is_array($ref) && array_key_exists($parent, $ref)) {
         $ref = &$ref[$parent];
       }
@@ -946,20 +947,20 @@ function &entityconnect_array_get_nested_value(array &$array, array $parents, &$
 }
 
 /**
- * Reimplements drupal_array_set_nested_value() to ansewer specific needs of the module.
+ * Reimplements backdrop_array_set_nested_value() to ansewer specific needs of the module.
  *
  * Entityconnect button adds a new level in parents array,
  * named "add_entityconnect" and "edit_entityconnect" and we need to remove
  * them into our array building. So we need to rewrite
- * drupal_array_set_nested_value() to include these remove.
+ * backdrop_array_set_nested_value() to include these remove.
  *
- * @see drupal_array_set_nested_value()
+ * @see backdrop_array_set_nested_value()
  */
 function entityconnect_array_set_nested_value(array &$array, array $parents, $value, $force = FALSE) {
   $ref = &$array;
   foreach ($parents as $parent) {
     if (stripos($parent, 'add_entityconnect') === FALSE
-        && stripos($parent, 'edit_entityconnect') === FALSE) {
+         && stripos($parent, 'edit_entityconnect') === FALSE) {
       // PHP auto-creates container arrays and NULL entries without error
       // if $ref is NULL, but throws an error if $ref is set, but not an array.
       if ($force && isset($ref) && !is_array($ref)) {

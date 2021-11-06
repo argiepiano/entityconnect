@@ -31,6 +31,10 @@ function entityconnect_term_reference_entityconnect_field_attach_form_alter(&$da
   }
 }
 
+/**
+ * @todo Please document this function.
+ * @see http://drupal.org/node/1354
+ */
 function entityconnect_term_reference_entityconnect_child_form_submit_alter(&$datas) {
 
   $entity_type = $datas['entity_type'];

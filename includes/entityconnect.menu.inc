@@ -24,7 +24,7 @@ function entityconnect_return($cache_id) {
     $options['query'][$key] = $value;
   }
 
-  drupal_goto($cache->data['dest'], $options);
+  backdrop_goto($cache->data['dest'], $options);
 }
 
 /**
@@ -62,7 +62,7 @@ function entityconnect_add($cache_id) {
     'entity_type' => $entity_type,
     'acceptable_tpes' => $acceptable_types
   );
-  drupal_alter('entityconnect_add_info', $add_info, $context);
+  backdrop_alter('entityconnect_add_info', $add_info, $context);
 
   if (isset($add_info)) {
     $content = $add_info['content'];
@@ -76,7 +76,7 @@ function entityconnect_add($cache_id) {
     // Cast every item as array.
     // That allow both object or array to be treated the same way.
     $item = (array) $item;
-    drupal_goto($item['href']);
+    backdrop_goto($item['href']);
   }
 
   $output = theme($theme, array(
@@ -138,7 +138,7 @@ function entityconnect_entityconnect_add_info($cache_id, $entity_type, $acceptab
       }
       else {
         foreach (taxonomy_get_vocabularies() as $key => $item) {
-          !isset($item->href) ? $item->href = NULL : $item->href;
+          isset($item->href) ? $item->href = NULL : $item->href;
           $type = $item->machine_name;
           $item->href = "admin/structure/taxonomy/$type/add/$cache_id";
           $content[$key] = $item;
@@ -199,7 +199,7 @@ function entityconnect_edit($cache_id) {
     'entity_type' => $entity_type,
     'target_id' => $target_id
   );
-  drupal_alter('entityconnect_edit_info', $edit_info, $context);
+  backdrop_alter('entityconnect_edit_info', $edit_info, $context);
 
   if (isset($edit_info)) {
     $content = $edit_info['content'];
@@ -209,12 +209,12 @@ function entityconnect_edit($cache_id) {
   if (count($content) == 1) {
     $item = array_pop($content);
     if (is_array($item['href'])) {
-      $href= array_shift($item['href']);
+      $href = array_shift($item['href']);
     }
     else {
       $href = $item['href'];
     }
-    drupal_goto($href, array(
+    backdrop_goto($href, array(
       'query' => array("build_cache_id" => $cache_id, "child" => TRUE)));
   }
 
