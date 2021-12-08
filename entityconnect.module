@@ -169,7 +169,7 @@ function entityconnect_cache_get($cid) {
  * Implements hook_flush_caches().
  */
 function entityconnect_flush_caches() {
-  return array('cache_entityconnect');
+  return array(ENTITYCONNECT_CACHE_TABLE);
 }
 
 /**
