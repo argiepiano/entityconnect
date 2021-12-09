@@ -102,7 +102,7 @@ function entityconnect_update_last_removed() {
  */
 function entityconnect_update_1000() {
   $config = config('entityconnect.settings');
-  $config->set('entityconnect_cache_lifetime', update_variable_get('entityconnect_cache_lifetime', 'CACHE_PERMANENT'));
+  $config->set('entityconnect_cache_lifetime', update_variable_get('entityconnect_cache_lifetime', CACHE_PERMANENT));
   $config->set('entityconnect_unload_add_default', update_variable_get('entityconnect_unload_add_default', '1'));
   $config->set('entityconnect_unload_edit_default', update_variable_get('entityconnect_unload_edit_default', '1'));
   $config->set('entityconnect_show_add_icon_default', update_variable_get('entityconnect_show_add_icon_default', '0'));
