@@ -225,7 +225,7 @@ function entityconnect_form_alter(&$form, &$form_state, $form_id) {
  */
 function entityconnect_module_implements_alter(&$module_list, $context) {
   // Need to override both to get correct sort order.
-  // @see: https://api.drupal.org/api/backdrop/modules%21system%21system.api.php/function/hook_module_implements_alter/7
+  // @see: https://docs.backdropcms.org/api/backdrop/core%21modules%21system%21system.api.php/function/hook_module_implements_alter/1
   if ($context == 'form_node_form_alter' || $context == 'form_alter') {
     // Move entityconnect implementation to the end of the list to ensure it gets called last.
     $group = isset($module_list['entityconnect']) ? $module_list['entityconnect'] : FALSE;

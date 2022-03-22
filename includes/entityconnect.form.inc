@@ -209,13 +209,13 @@ function _entityconnect_field_attach_form($entity_type, $entity, &$form, &$form_
 }
 
 /**
- * Here we attach a "Add" submit button.
+ * Here we attach an "Add" submit button.
  */
 function entityconnect_add_form_element_new(&$widget_element, $language, $field_name, $parents, $key, $extra_class, $instance, $entity_type, $acceptable_types = NULL) {
   $widget_element["add_entityconnect__{$field_name}_{$key}_{$parents}"] = array(
     '#type' => 'submit',
     '#limit_validation_errors' => array(),
-    '#value' => t('New content'),
+    '#value' => t('Add new content'),
     '#name' => "add_entityconnect__{$field_name}_{$key}_{$parents}",
     '#prefix' => "<div class = 'entityconnect-add $extra_class'>",
     '#suffix' => '</div>',
@@ -244,7 +244,7 @@ function entityconnect_add_form_element_new(&$widget_element, $language, $field_
 }
 
 /**
- * Here we attach a "Edit" submit button.
+ * Here we attach an "Edit" submit button.
  */
 function entityconnect_add_form_element_edit(&$widget_element, $language, $field_name, $parents, $key, $extra_class, $entity_type) {
   $widget_element["edit_entityconnect__{$field_name}_{$key}_{$parents}"] = array(
