@@ -39,7 +39,6 @@ Credits
 - Ported to Backdrop CMS by [Jason Flatt](https://github.com/oadaeh).
 - Originally written for Drupal by [Jean-Yves GASTAUD](https://github.com/jygastaud).
 - Based on [Node Connect](https://www.drupal.org/project/nodeconnect).
-- Inital development sponsored by [MiniCorp](https://minicorp.example.com)
 
 License
 -------
