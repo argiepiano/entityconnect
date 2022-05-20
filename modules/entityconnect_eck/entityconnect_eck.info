@@ -3,6 +3,8 @@ description = "Allows for referenced entity to be created and edited from the en
 backdrop = 1.x
 type = module
 package = Entity Connect
+; The ECK module has not been ported to Backdrop, so do not show this module.
+hidden = TRUE
 
 dependencies[] = "eck"
 ;dependencies[] = "entityconnect_entityreference"
