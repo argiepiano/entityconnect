@@ -11,7 +11,7 @@
  */
 function entityconnect_field_instance_settings_form($field, $instance) {
   $config = config('entityconnect.settings');
-  $settings = $instance;
+  $settings = $instance['settings'];
 
   $form['entityconnect'] = array(
     '#type' => 'fieldset',
@@ -113,7 +113,7 @@ function entityconnect_form_field_ui_field_edit_form_alter(&$form, &$form_state,
     $field = $form['#field'];
     $additions = module_invoke('entityconnect', 'field_instance_settings_form', $field, $instance);
     if (is_array($additions) && isset($form['instance'])) {
-      $form['instance'] += $additions;
+      $form['instance']['settings'] += $additions;
     }
   }
 }
